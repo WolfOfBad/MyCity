@@ -27,7 +27,13 @@ data class Place(val name: String, val description: String, val imageRes: Int)
 
 @Composable
 fun PlaceDetailScreen(navController: NavHostController, placeName: String) {
-    val place = listOf(Category.Cafes, Category.Parks, Category.Malls)
+    val place = listOf(
+        Category.Cafes,
+        Category.Parks,
+        Category.Mall,
+        Category.Saloon,
+        Category.Gym
+    )
         .flatMap { it.places }
         .find { it.name == placeName }
 

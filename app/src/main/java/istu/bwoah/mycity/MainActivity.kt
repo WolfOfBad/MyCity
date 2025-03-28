@@ -62,7 +62,13 @@ fun CityGuideApp() {
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
-    val categories = listOf(Category.Cafes, Category.Parks, Category.Malls)
+    val categories = listOf(
+        Category.Cafes,
+        Category.Parks,
+        Category.Mall,
+        Category.Saloon,
+        Category.Gym
+    )
 
     Scaffold(
         topBar = {
@@ -92,7 +98,7 @@ fun HomeScreen(navController: NavHostController) {
                             modifier = Modifier
                                 .size(64.dp)
                                 .padding(end = 8.dp),
-                            contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Fit
                         )
                         Text(
                             text = category.name,

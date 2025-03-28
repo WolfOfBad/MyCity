@@ -27,12 +27,12 @@ import androidx.navigation.NavHostController
 
 sealed class Category(val name: String, val places: List<Place>, val imageRes: Int) {
     object Cafes : Category(
-        "Кафе", listOf(
+        "Кофейни", listOf(
             Place("Кафе 1", "Описание Кафе 1", R.drawable.cafe),
             Place("Кафе 2", "Описание Кафе 2", R.drawable.cafe),
             Place("Кафе 3", "Описание Кафе 3", R.drawable.cafe)
         ),
-        R.drawable.mall
+        R.drawable.coffee
     )
 
     object Parks : Category(
@@ -41,10 +41,10 @@ sealed class Category(val name: String, val places: List<Place>, val imageRes: I
             Place("Парк 2", "Описание Парка 2", R.drawable.cafe),
             Place("Парк 3", "Описание Парка 3", R.drawable.cafe)
         ),
-        R.drawable.mall
+        R.drawable.park
     )
 
-    object Malls : Category(
+    object Mall : Category(
         "Торговые центры", listOf(
             Place("ТЦ 1", "Описание ТЦ 1", R.drawable.cafe),
             Place("ТЦ 2", "Описание ТЦ 2", R.drawable.cafe),
@@ -52,12 +52,36 @@ sealed class Category(val name: String, val places: List<Place>, val imageRes: I
         ),
         R.drawable.mall
     )
+
+    object Saloon : Category(
+        "Бары", listOf(
+            Place("Бар 1", "Описание бара 1", R.drawable.cafe),
+            Place("Бар 2", "Описание бара 2", R.drawable.cafe),
+            Place("Бар 3", "Описание бара 3", R.drawable.cafe),
+        ),
+        R.drawable.saloon
+    )
+
+    object Gym : Category(
+        "Спортивные залы", listOf(
+            Place("Сопртивный зал 1", "Описание сопртивного зала 1", R.drawable.cafe),
+            Place("Сопртивный зал 2", "Описание сопртивного зала 2", R.drawable.cafe),
+            Place("Сопртивный зал 3", "Описание сопртивного зала 3", R.drawable.cafe),
+        ),
+        R.drawable.gym
+    )
 }
 
 @Composable
 fun CategoryScreen(navController: NavHostController, categoryName: String) {
     val category =
-        listOf(Category.Cafes, Category.Parks, Category.Malls).find { it.name == categoryName }
+        listOf(
+            Category.Cafes,
+            Category.Parks,
+            Category.Mall,
+            Category.Saloon,
+            Category.Gym
+        ).find { it.name == categoryName }
 
     Scaffold(
         topBar = {
@@ -98,7 +122,7 @@ fun CategoryScreen(navController: NavHostController, categoryName: String) {
                             modifier = Modifier
                                 .size(64.dp)
                                 .padding(end = 8.dp),
-                            contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Fit
                         )
                         Text(
                             text = place.name,

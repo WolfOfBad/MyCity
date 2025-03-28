@@ -13,10 +13,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -25,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -106,7 +106,7 @@ fun HomeScreen(navController: NavHostController) {
         Column(modifier = Modifier.padding(paddingValues)) {
             HorizontalDivider(thickness = 1.5.dp, color = Color.Black)
             LazyColumn {
-                items(categories) { category ->
+                itemsIndexed(categories) { index, category ->
                     Text(
                         text = category.name,
                         fontSize = 24.sp,
@@ -116,7 +116,9 @@ fun HomeScreen(navController: NavHostController) {
                             .padding(8.dp)
                             .clickable { navController.navigate("category/${category.name}") }
                     )
-                    HorizontalDivider(thickness = 0.5.dp, color = Color.LightGray)
+                    if (index < categories.lastIndex) {
+                        HorizontalDivider(thickness = 0.5.dp, color = Color.LightGray)
+                    }
                 }
             }
         }
@@ -135,9 +137,10 @@ fun CategoryScreen(navController: NavHostController, categoryName: String) {
                 title = { Text(categoryName) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            painterResource(id = android.R.drawable.ic_media_previous),
-                            contentDescription = "Назад"
+                        Image(
+                            painterResource(id = R.drawable.back),
+                            contentDescription = "Назад",
+                            contentScale = ContentScale.Fit
                         )
                     }
                 }
@@ -147,7 +150,7 @@ fun CategoryScreen(navController: NavHostController, categoryName: String) {
         Column(modifier = Modifier.padding(paddingValues)) {
             HorizontalDivider(thickness = 1.dp, color = Color.Black)
             LazyColumn {
-                items(category?.places ?: emptyList()) { place ->
+                itemsIndexed(category?.places ?: emptyList()) { index, place ->
                     Text(
                         text = place.name,
                         fontSize = 20.sp,
@@ -155,7 +158,9 @@ fun CategoryScreen(navController: NavHostController, categoryName: String) {
                             .padding(8.dp)
                             .clickable { navController.navigate("place/$categoryName/${place.name}") }
                     )
-                    HorizontalDivider(thickness = 0.5.dp, color = Color.LightGray)
+                    if (index < (category?.places?.lastIndex ?: 0)) {
+                        HorizontalDivider(thickness = 0.5.dp, color = Color.LightGray)
+                    }
                 }
             }
         }
@@ -176,9 +181,10 @@ fun PlaceDetailScreen(navController: NavHostController, category: String, placeN
                 title = { Text(placeName) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            painterResource(id = android.R.drawable.ic_media_previous),
-                            contentDescription = "Назад"
+                        Image(
+                            painterResource(id = R.drawable.back),
+                            contentDescription = "Назад",
+                            contentScale = ContentScale.Fit
                         )
                     }
                 }

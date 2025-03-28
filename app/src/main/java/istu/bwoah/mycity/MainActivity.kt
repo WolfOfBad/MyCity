@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -59,7 +58,6 @@ fun CityGuideApp() {
         composable("place/{category}/{place}") { backStackEntry ->
             PlaceDetailScreen(
                 navController,
-                backStackEntry.arguments?.getString("category") ?: "",
                 backStackEntry.arguments?.getString("place") ?: ""
             )
         }
@@ -97,7 +95,6 @@ sealed class Category(val name: String, val places: List<Place>, val imageRes: I
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavHostController) {
     val categories = listOf(Category.Cafes, Category.Parks, Category.Malls)
@@ -140,7 +137,6 @@ fun HomeScreen(navController: NavHostController) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryScreen(navController: NavHostController, categoryName: String) {
     val category =
@@ -195,10 +191,8 @@ fun CategoryScreen(navController: NavHostController, categoryName: String) {
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PlaceDetailScreen(navController: NavHostController, category: String, placeName: String) {
+fun PlaceDetailScreen(navController: NavHostController, placeName: String) {
     val place = listOf(Category.Cafes, Category.Parks, Category.Malls)
         .flatMap { it.places }
         .find { it.name == placeName }
@@ -239,7 +233,6 @@ fun PlaceDetailScreen(navController: NavHostController, category: String, placeN
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

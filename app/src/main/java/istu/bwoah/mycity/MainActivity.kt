@@ -101,7 +101,7 @@ fun HomeScreen(navController: NavHostController) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "Виды досуга", fontWeight = FontWeight.Bold) })
+            TopAppBar(title = { Text(text = "My City", fontWeight = FontWeight.Bold, fontSize = 32.sp) })
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
@@ -119,13 +119,13 @@ fun HomeScreen(navController: NavHostController) {
                             painter = painterResource(id = category.imageRes),
                             contentDescription = category.name,
                             modifier = Modifier
-                                .size(48.dp)
+                                .size(64.dp)
                                 .padding(end = 8.dp),
                             contentScale = ContentScale.Crop
                         )
                         Text(
                             text = category.name,
-                            fontSize = 24.sp,
+                            fontSize = 28.sp,
                         )
                     }
                     if (index < categories.lastIndex) {
@@ -145,7 +145,7 @@ fun CategoryScreen(navController: NavHostController, categoryName: String) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = categoryName, fontWeight = FontWeight.Bold) },
+                title = { Text(text = categoryName, fontWeight = FontWeight.Bold, fontSize = 32.sp) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Image(
@@ -179,7 +179,7 @@ fun CategoryScreen(navController: NavHostController, categoryName: String) {
                         )
                         Text(
                             text = place.name,
-                            fontSize = 20.sp
+                            fontSize = 28.sp
                         )
                     }
                     if (index < (category?.places?.lastIndex ?: 0)) {
@@ -200,7 +200,7 @@ fun PlaceDetailScreen(navController: NavHostController, placeName: String) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = placeName, fontWeight = FontWeight.Bold) },
+                title = { Text(text = placeName, fontWeight = FontWeight.Bold, fontSize = 32.sp) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Image(

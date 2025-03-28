@@ -97,8 +97,8 @@ fun HomeScreen(navController: NavHostController) {
 fun CategoryScreen(navController: NavHostController, categoryName: String) {
     val category = listOf(Category.Cafes, Category.Parks, Category.Malls).find { it.name == categoryName }
 
-    Scaffold(topBar = { TopAppBar(title = { Text(categoryName) }) }) {
-        LazyColumn(modifier = Modifier.padding(16.dp)) {
+    Scaffold(topBar = { TopAppBar(title = { Text(categoryName) }) }) { paddingValues ->
+        LazyColumn(modifier = Modifier.padding(paddingValues)) {
             items(category?.places ?: emptyList()) { place ->
                 Text(
                     text = place.name,
@@ -119,9 +119,9 @@ fun PlaceDetailScreen(category: String, placeName: String) {
         .flatMap { it.places }
         .find { it.name == placeName }
 
-    Scaffold(topBar = { TopAppBar(title = { Text(placeName) }) }) {
+    Scaffold(topBar = { TopAppBar(title = { Text(placeName) }) }) { paddingValues ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(16.dp),
+            modifier = Modifier.fillMaxSize().padding(paddingValues).padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             place?.let {

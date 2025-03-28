@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -67,13 +68,14 @@ fun CityGuideApp() {
 
 data class Place(val name: String, val description: String, val imageRes: Int)
 
-sealed class Category(val name: String, val places: List<Place>) {
+sealed class Category(val name: String, val places: List<Place>, val imageRes: Int) {
     object Cafes : Category(
         "Кафе", listOf(
             Place("Кафе 1", "Описание Кафе 1", R.drawable.cafe),
             Place("Кафе 2", "Описание Кафе 2", R.drawable.cafe),
             Place("Кафе 3", "Описание Кафе 3", R.drawable.cafe)
-        )
+        ),
+        R.drawable.mall
     )
 
     object Parks : Category(
@@ -81,7 +83,8 @@ sealed class Category(val name: String, val places: List<Place>) {
             Place("Парк 1", "Описание Парка 1", R.drawable.cafe),
             Place("Парк 2", "Описание Парка 2", R.drawable.cafe),
             Place("Парк 3", "Описание Парка 3", R.drawable.cafe)
-        )
+        ),
+        R.drawable.mall
     )
 
     object Malls : Category(
@@ -89,7 +92,8 @@ sealed class Category(val name: String, val places: List<Place>) {
             Place("ТЦ 1", "Описание ТЦ 1", R.drawable.cafe),
             Place("ТЦ 2", "Описание ТЦ 2", R.drawable.cafe),
             Place("ТЦ 3", "Описание ТЦ 3", R.drawable.cafe)
-        )
+        ),
+        R.drawable.mall
     )
 }
 
@@ -100,22 +104,33 @@ fun HomeScreen(navController: NavHostController) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Виды досуга") })
+            TopAppBar(title = { Text(text = "Виды досуга", fontWeight = FontWeight.Bold) })
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
             HorizontalDivider(thickness = 1.5.dp, color = Color.Black)
             LazyColumn {
                 itemsIndexed(categories) { index, category ->
-                    Text(
-                        text = category.name,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .clickable { navController.navigate("category/${category.name}") }
-                    )
+                            .clickable { navController.navigate("category/${category.name}") },
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = category.imageRes),
+                            contentDescription = category.name,
+                            modifier = Modifier
+                                .size(48.dp)
+                                .padding(end = 8.dp),
+                            contentScale = ContentScale.Crop
+                        )
+                        Text(
+                            text = category.name,
+                            fontSize = 24.sp,
+                        )
+                    }
                     if (index < categories.lastIndex) {
                         HorizontalDivider(thickness = 0.5.dp, color = Color.LightGray)
                     }
@@ -134,7 +149,7 @@ fun CategoryScreen(navController: NavHostController, categoryName: String) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(categoryName) },
+                title = { Text(text = categoryName, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Image(
@@ -151,13 +166,26 @@ fun CategoryScreen(navController: NavHostController, categoryName: String) {
             HorizontalDivider(thickness = 1.dp, color = Color.Black)
             LazyColumn {
                 itemsIndexed(category?.places ?: emptyList()) { index, place ->
-                    Text(
-                        text = place.name,
-                        fontSize = 20.sp,
+                    Row(
                         modifier = Modifier
+                            .fillMaxWidth()
                             .padding(8.dp)
-                            .clickable { navController.navigate("place/$categoryName/${place.name}") }
-                    )
+                            .clickable { navController.navigate("place/$categoryName/${place.name}") },
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = place.imageRes),
+                            contentDescription = place.name,
+                            modifier = Modifier
+                                .size(64.dp)
+                                .padding(end = 8.dp),
+                            contentScale = ContentScale.Crop
+                        )
+                        Text(
+                            text = place.name,
+                            fontSize = 20.sp
+                        )
+                    }
                     if (index < (category?.places?.lastIndex ?: 0)) {
                         HorizontalDivider(thickness = 0.5.dp, color = Color.LightGray)
                     }
@@ -178,7 +206,7 @@ fun PlaceDetailScreen(navController: NavHostController, category: String, placeN
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(placeName) },
+                title = { Text(text = placeName, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Image(

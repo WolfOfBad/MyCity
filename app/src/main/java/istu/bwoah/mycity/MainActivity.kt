@@ -46,30 +46,34 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun CityGuideApp() {
     val navController = rememberNavController()
+    val categories = listOf(
+        Category.Cafes,
+        Category.Parks,
+        Category.Malls,
+        Category.Saloons,
+        Category.Gyms
+    )
     NavHost(navController = navController, startDestination = "home") {
-        composable("home") { HomeScreen(navController) }
+        composable("home") { HomeScreen(navController, categories) }
         composable("category/{name}") { backStackEntry ->
-            CategoryScreen(navController, backStackEntry.arguments?.getString("name") ?: "")
+            CategoryScreen(
+                navController,
+                categories.find {
+                    it.name == (backStackEntry.arguments?.getString("name") ?: "")
+                } ?: categories.first())
         }
         composable("place/{category}/{place}") { backStackEntry ->
             PlaceDetailScreen(
                 navController,
-                backStackEntry.arguments?.getString("place") ?: ""
+                categories.flatMap { it.places }
+                    .find { it.name == (backStackEntry.arguments?.getString("place") ?: "") }
             )
         }
     }
 }
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
-    val categories = listOf(
-        Category.Cafes,
-        Category.Parks,
-        Category.Mall,
-        Category.Saloon,
-        Category.Gym
-    )
-
+fun HomeScreen(navController: NavHostController, categories: List<Category>) {
     Scaffold(
         topBar = {
             TopAppBar(title = {

@@ -26,21 +26,17 @@ import androidx.navigation.NavHostController
 data class Place(val name: String, val description: String, val imageRes: Int)
 
 @Composable
-fun PlaceDetailScreen(navController: NavHostController, placeName: String) {
-    val place = listOf(
-        Category.Cafes,
-        Category.Parks,
-        Category.Mall,
-        Category.Saloon,
-        Category.Gym
-    )
-        .flatMap { it.places }
-        .find { it.name == placeName }
-
+fun PlaceDetailScreen(navController: NavHostController, place: Place?) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = placeName, fontWeight = FontWeight.Bold, fontSize = 32.sp) },
+                title = {
+                    Text(
+                        text = place?.name ?: "Ошибка",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 32.sp
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Image(

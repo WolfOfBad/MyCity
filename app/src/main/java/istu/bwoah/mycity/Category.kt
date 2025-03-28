@@ -27,7 +27,8 @@ import androidx.navigation.NavHostController
 
 sealed class Category(val name: String, val places: List<Place>, val imageRes: Int) {
     object Cafes : Category(
-        "Кофейни", listOf(
+        "Кофейни",
+        listOf(
             Place("Кафе 1", "Описание Кафе 1", R.drawable.cafe),
             Place("Кафе 2", "Описание Кафе 2", R.drawable.cafe),
             Place("Кафе 3", "Описание Кафе 3", R.drawable.cafe)
@@ -36,7 +37,8 @@ sealed class Category(val name: String, val places: List<Place>, val imageRes: I
     )
 
     object Parks : Category(
-        "Парки", listOf(
+        "Парки",
+        listOf(
             Place("Парк 1", "Описание Парка 1", R.drawable.cafe),
             Place("Парк 2", "Описание Парка 2", R.drawable.cafe),
             Place("Парк 3", "Описание Парка 3", R.drawable.cafe)
@@ -44,8 +46,9 @@ sealed class Category(val name: String, val places: List<Place>, val imageRes: I
         R.drawable.park
     )
 
-    object Mall : Category(
-        "Торговые центры", listOf(
+    object Malls : Category(
+        "Торговые центры",
+        listOf(
             Place("ТЦ 1", "Описание ТЦ 1", R.drawable.cafe),
             Place("ТЦ 2", "Описание ТЦ 2", R.drawable.cafe),
             Place("ТЦ 3", "Описание ТЦ 3", R.drawable.cafe)
@@ -53,8 +56,9 @@ sealed class Category(val name: String, val places: List<Place>, val imageRes: I
         R.drawable.mall
     )
 
-    object Saloon : Category(
-        "Бары", listOf(
+    object Saloons : Category(
+        "Бары",
+        listOf(
             Place("Бар 1", "Описание бара 1", R.drawable.cafe),
             Place("Бар 2", "Описание бара 2", R.drawable.cafe),
             Place("Бар 3", "Описание бара 3", R.drawable.cafe),
@@ -62,8 +66,9 @@ sealed class Category(val name: String, val places: List<Place>, val imageRes: I
         R.drawable.saloon
     )
 
-    object Gym : Category(
-        "Спортивные залы", listOf(
+    object Gyms : Category(
+        "Спортивные залы",
+        listOf(
             Place("Сопртивный зал 1", "Описание сопртивного зала 1", R.drawable.cafe),
             Place("Сопртивный зал 2", "Описание сопртивного зала 2", R.drawable.cafe),
             Place("Сопртивный зал 3", "Описание сопртивного зала 3", R.drawable.cafe),
@@ -73,22 +78,13 @@ sealed class Category(val name: String, val places: List<Place>, val imageRes: I
 }
 
 @Composable
-fun CategoryScreen(navController: NavHostController, categoryName: String) {
-    val category =
-        listOf(
-            Category.Cafes,
-            Category.Parks,
-            Category.Mall,
-            Category.Saloon,
-            Category.Gym
-        ).find { it.name == categoryName }
-
+fun CategoryScreen(navController: NavHostController, category: Category) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        text = categoryName,
+                        text = category.name,
                         fontWeight = FontWeight.Bold,
                         fontSize = 32.sp
                     )
@@ -108,12 +104,12 @@ fun CategoryScreen(navController: NavHostController, categoryName: String) {
         Column(modifier = Modifier.padding(paddingValues)) {
             HorizontalDivider(thickness = 1.dp, color = Color.Black)
             LazyColumn {
-                itemsIndexed(category?.places ?: emptyList()) { index, place ->
+                itemsIndexed(category.places) { index, place ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .clickable { navController.navigate("place/$categoryName/${place.name}") },
+                            .clickable { navController.navigate("place/${category.name}/${place.name}") },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Image(
@@ -129,7 +125,7 @@ fun CategoryScreen(navController: NavHostController, categoryName: String) {
                             fontSize = 28.sp
                         )
                     }
-                    if (index < (category?.places?.lastIndex ?: 0)) {
+                    if (index < category.places.lastIndex) {
                         HorizontalDivider(thickness = 0.5.dp, color = Color.LightGray)
                     }
                 }
